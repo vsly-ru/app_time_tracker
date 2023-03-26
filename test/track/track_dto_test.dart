@@ -1,4 +1,4 @@
-import 'package:auto_time_tracker/core/mappable/dtos.dart';
+import 'package:auto_time_tracker/features/track/data/DTO/track_dto.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
@@ -27,8 +27,8 @@ void main() {
       'Non-UTC startTime throws',
       () {
         // arrange
-        // act
         bool threwException = false;
+        // act
         try {
           TrackDTO(
             appName: appName,
@@ -47,8 +47,8 @@ void main() {
       'Non-UTC finishTime throws',
       () {
         // arrange
-        // act
         bool threwException = false;
+        // act
         try {
           TrackDTO(
             appName: appName,
@@ -62,39 +62,6 @@ void main() {
           expect(threwException, true);
         }
         // assert
-      },
-    );
-    test(
-      'Encoding DTO test',
-      () {
-        // arrange
-        final dto = TrackDTO(
-          appName: appName,
-          startTime: startTime,
-          finishTime: finishTime,
-        );
-        // act
-        final encoded = Mapper.toValue(dto);
-        // assert
-        expect(encoded, encodedTest);
-      },
-    );
-    test(
-      'Decoding DTO test',
-      () {
-        // arrange
-        final expectedDTO = TrackDTO(
-          appName: appName,
-          startTime: startTime,
-          finishTime: finishTime,
-        );
-        // act
-        final decoded = Mapper.fromValue<TrackDTO>(encodedTest);
-        // assert
-        expect(Mapper.isEqual(decoded, expectedDTO), isTrue);
-        expect(decoded.appName, appName);
-        expect(decoded.startTime, startTime);
-        expect(decoded.finishTime, finishTime);
       },
     );
   });

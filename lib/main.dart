@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:developer';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:system_windows/system_windows.dart';
 
@@ -32,38 +33,42 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  String info = '';
+  String _info = '';
 
-  Timer? timer;
+  Timer? _timer;
+  final _systemWindows = SystemWindows();
 
   @override
   void initState() {
-    var systemWindows = SystemWindows();
-
-    timer = Timer.periodic(const Duration(milliseconds: 5000), (_) async {
-      final start = DateTime.now();
-      final activeApps = (await systemWindows.getActiveApps())
-          .where((element) => element.isActive);
-      final finish = DateTime.now();
-      final SystemWindow? active =
-          activeApps.isNotEmpty ? activeApps.first : null;
-
-      _setInfo('${finish.difference(start).inMilliseconds}ms\n${active?.name}');
-    });
-
+    _timer = Timer.periodic(const Duration(milliseconds: 1280), periodic);
     log('started');
     super.initState();
+    periodic(_timer!);
   }
 
   @override
   void dispose() {
-    timer?.cancel();
+    _timer?.cancel();
     super.dispose();
+  }
+
+  void periodic(Timer timer) async {
+    // final hasScreenRecordingPermissions = Platform.isMacOS
+    //     ? await _systemWindows.hasScreenRecordingPermission()
+    //     : true;
+
+    final start = DateTime.now();
+    final activeApps = (await _systemWindows.getActiveApps())
+        .where((element) => element.isActive);
+    final finish = DateTime.now();
+    final SystemWindow? active =
+        activeApps.isNotEmpty ? activeApps.first : null;
+    _setInfo('${finish.difference(start).inMilliseconds}ms\n${active?.name}');
   }
 
   void _setInfo(String i) {
     setState(() {
-      info = i;
+      _info = i;
     });
   }
 
@@ -78,7 +83,7 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Text(
-              info,
+              _info,
               style: Theme.of(context).textTheme.bodyMedium,
             ),
           ],
