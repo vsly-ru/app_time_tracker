@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:developer';
 import 'dart:io';
+import 'package:auto_time_tracker/core/theme/dark.dart';
 import 'package:flutter/material.dart';
 import 'package:system_windows/system_windows.dart';
 
@@ -18,6 +19,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
+      darkTheme: fDartTheme,
       home: const MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }

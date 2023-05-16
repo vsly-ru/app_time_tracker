@@ -1,29 +1,29 @@
 import 'package:auto_time_tracker/core/extensions/string.dart';
 
-class TrackDTO {
-  TrackDTO({
+class TrackEntity {
+  TrackEntity({
     required this.appName,
-    required this.startTime,
-    this.finishTime,
+    required this.start,
+    required this.end,
   })  : assert(
-          startTime.isUtc,
+          start.isUtc,
           'DateTime must be in UTC format',
         ),
         assert(
-          finishTime == null || finishTime.isUtc,
+          end.isUtc,
           'DateTime must be in UTC format',
         ),
         assert(
-          finishTime == null || startTime.isBefore(finishTime),
-          'startTime must be before finishTime',
+          start.isBefore(end) || start.isAtSameMomentAs(end),
+          'start must come before the end (or at the same time)',
         );
 
   /// active app name
   final String appName;
 
   /// time in UTC-0
-  final DateTime startTime;
+  final DateTime start;
 
   /// time in UTC-0
-  final DateTime? finishTime;
+  final DateTime end;
 }

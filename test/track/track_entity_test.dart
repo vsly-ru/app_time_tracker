@@ -1,10 +1,10 @@
-import 'package:auto_time_tracker/features/track/data/DTO/track_dto.dart';
+import 'package:auto_time_tracker/features/track/domain/entities/track_entity.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   const appName = 'test';
-  final startTime = DateTime.parse('2022-11-15T14:23:32.133Z');
-  final finishTime = DateTime.parse('2022-11-15T14:23:55.111Z');
+  final start = DateTime.parse('2022-11-15T14:23:32.133Z');
+  final end = DateTime.parse('2022-11-15T14:23:55.111Z');
   const encodedTest = 'test 2022-11-15T14:23:32.133Z 2022-11-15T14:23:55.111Z';
   group('TrackDTO', () {
     test(
@@ -12,27 +12,28 @@ void main() {
       () {
         // arrange
         // act
-        final testDto = TrackDTO(
+        final testTrack = TrackEntity(
           appName: appName,
-          startTime: startTime,
-          finishTime: finishTime,
+          start: start,
+          end: end,
         );
         // assert
-        expect(testDto.appName, appName);
-        expect(testDto.startTime, startTime);
-        expect(testDto.finishTime, finishTime);
+        expect(testTrack.appName, appName);
+        expect(testTrack.start, start);
+        expect(testTrack.end, end);
       },
     );
     test(
-      'Non-UTC startTime throws',
+      'Non-UTC start throws',
       () {
         // arrange
         bool threwException = false;
         // act
         try {
-          TrackDTO(
+          TrackEntity(
             appName: appName,
-            startTime: startTime.toLocal(),
+            start: start.toLocal(),
+            end: start.toLocal(),
           );
         } catch (err) {
           expect(err, isA<AssertionError>());
@@ -44,16 +45,16 @@ void main() {
       },
     );
     test(
-      'Non-UTC finishTime throws',
+      'Non-UTC end throws',
       () {
         // arrange
         bool threwException = false;
         // act
         try {
-          TrackDTO(
+          TrackEntity(
             appName: appName,
-            startTime: startTime,
-            finishTime: finishTime.toLocal(),
+            start: start,
+            end: end.toLocal(),
           );
         } catch (err) {
           expect(err, isA<AssertionError>());
